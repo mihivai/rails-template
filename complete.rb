@@ -16,34 +16,47 @@ def add_gems
   gem "jbuilder"
   gem "sassc-rails"
   gem "bootsnap", require: false
+
+  group :development, :test do
+    gem 'pry-byebug'
+  end
+
+  group :development do
+    gem 'letter_opener'
+    gem "web-console"
+  end
+
+  group :test do
+    gem "capybara"
+    gem "selenium-webdriver"
+    gem "webdrivers"
+  end
+  RUBY
 end
 
 def add_pages_home
-<<-HTML
-<%= content_for :meta_title, "Yourdomain - Your Meta" %>
+  <<-HTML
+  <%= content_for :meta_title, "Yourdomain - Your Meta" %>
 
-<div class="container page-min-height">
-  <h1>Pages#Home</h1>
-  <p>Find me in app/views/pages/home.html.erb</p>
-</div>
-HTML
+  <div class="container page-min-height">
+    <h1>Pages#Home</h1>
+    <p>Find me in app/views/pages/home.html.erb</p>
+  </div>
+  HTML
 end
 
 def add_pages_legal
-<<-HTML
-<% content_for(:robots) do %>
-  <meta name="robots" content='noindex, nofollow'>
-<% end %>
+  <<-HTML
+  <% content_for(:robots) do %>
+    <meta name="robots" content='noindex, nofollow'>
+  <% end %>
 
-<div class="container page-min-height">
-  <h1>Pages#Legal</h1>
-  <p>Find me in app/views/pages/legal.html.erb</p>
-</div>
-HTML
+  <div class="container page-min-height">
+    <h1>Pages#Legal</h1>
+    <p>Find me in app/views/pages/legal.html.erb</p>
+  </div>
+  HTML
 end
-
-# active_admin = ARGV.include?('active_admin:true')
-# postmark = ARGV.include?('postmark:true')
 
 # GEMFILE
 ########################################
@@ -88,39 +101,39 @@ after_bundle do
   ########################################
   run 'rm .gitignore'
   file '.gitignore', <<-TXT
-  /.bundle
+/.bundle
 
-  # Ignore all logfiles and tempfiles.
-  /log/*
-  /tmp/*
-  !/log/.keep
-  !/tmp/.keep
+# Ignore all logfiles and tempfiles.
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
 
-  # Ignore pidfiles, but keep the directory.
-  /tmp/pids/*
-  !/tmp/pids/
-  !/tmp/pids/.keep
+# Ignore pidfiles, but keep the directory.
+/tmp/pids/*
+!/tmp/pids/
+!/tmp/pids/.keep
 
-  # Ignore uploaded files in development.
-  /storage/*
-  !/storage/.keep
-  /tmp/storage/*
-  !/tmp/storage/
-  !/tmp/storage/.keep
+# Ignore uploaded files in development.
+/storage/*
+!/storage/.keep
+/tmp/storage/*
+!/tmp/storage/
+!/tmp/storage/.keep
 
-  /public/assets
+/public/assets
 
-  # Ignore master key for decrypting credentials and more.
-  /config/master.key
-  .env*
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+.env*
 
-  /config/credentials/development.key
+/config/credentials/development.key
 
-  /config/credentials/staging.key
+/config/credentials/staging.key
 
-  /config/credentials/production.key
+/config/credentials/production.key
 
-  TXT
+TXT
 
   # Devise install + user
   ########################################
@@ -170,24 +183,6 @@ if Rails.application.config.respond_to?(:action_cable)
   Rails.application.config.action_cable.mount_path = '/cable'
 end
 CODE
-
-# Add Active Admin if specified
-# if active_admin
-#   gem 'devise-i18n'
-
-#   after_bundle do
-#     generate 'active_admin:install'
-#     generate 'devise:i18n:install'
-#   end
-# end
-
-# Add Postmark if specified
-# if postmark
-#   after_bundle do
-#     environment "config.action_mailer.delivery_method = :postmark", env: 'production'
-#   end
-# end
-
 
 
 # Git
