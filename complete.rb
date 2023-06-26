@@ -42,8 +42,8 @@ def add_pages_legal
 HTML
 end
 
-active_admin = ARGV.include?('active_admin:true')
-postmark = ARGV.include?('postmark:true')
+# active_admin = ARGV.include?('active_admin:true')
+# postmark = ARGV.include?('postmark:true')
 
 # GEMFILE
 ########################################
