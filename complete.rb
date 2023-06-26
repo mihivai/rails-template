@@ -88,39 +88,39 @@ after_bundle do
   ########################################
   run 'rm .gitignore'
   file '.gitignore', <<-TXT
-/.bundle
+  /.bundle
 
-# Ignore all logfiles and tempfiles.
-/log/*
-/tmp/*
-!/log/.keep
-!/tmp/.keep
+  # Ignore all logfiles and tempfiles.
+  /log/*
+  /tmp/*
+  !/log/.keep
+  !/tmp/.keep
 
-# Ignore pidfiles, but keep the directory.
-/tmp/pids/*
-!/tmp/pids/
-!/tmp/pids/.keep
+  # Ignore pidfiles, but keep the directory.
+  /tmp/pids/*
+  !/tmp/pids/
+  !/tmp/pids/.keep
 
-# Ignore uploaded files in development.
-/storage/*
-!/storage/.keep
-/tmp/storage/*
-!/tmp/storage/
-!/tmp/storage/.keep
+  # Ignore uploaded files in development.
+  /storage/*
+  !/storage/.keep
+  /tmp/storage/*
+  !/tmp/storage/
+  !/tmp/storage/.keep
 
-/public/assets
+  /public/assets
 
-# Ignore master key for decrypting credentials and more.
-/config/master.key
-.env*
+  # Ignore master key for decrypting credentials and more.
+  /config/master.key
+  .env*
 
-/config/credentials/development.key
+  /config/credentials/development.key
 
-/config/credentials/staging.key
+  /config/credentials/staging.key
 
-/config/credentials/production.key
+  /config/credentials/production.key
 
-TXT
+  TXT
 
   # Devise install + user
   ########################################
