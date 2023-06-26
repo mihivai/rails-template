@@ -42,6 +42,9 @@ def add_pages_legal
 HTML
 end
 
+active_admin = ARGV.include?('active_admin:true')
+postmark = ARGV.include?('postmark:true')
+
 # GEMFILE
 ########################################
 run 'rm Gemfile'
@@ -171,10 +174,8 @@ if Rails.application.config.respond_to?(:action_cable)
 end
 CODE
 
-# Add optional features based on user input
-# Active Admin
-if yes?('Do you want to add Active Admin? (y/n)')
-  gem 'activeadmin'
+# Add Active Admin if specified
+if active_admin
   gem 'devise-i18n'
 
   after_bundle do
@@ -183,15 +184,13 @@ if yes?('Do you want to add Active Admin? (y/n)')
   end
 end
 
-
-# Postmark
-if yes?('Do you want to add Postmark? (y/n)')
-  gem 'postmark-rails'
-
+# Add Postmark if specified
+if postmark
   after_bundle do
     environment "config.action_mailer.delivery_method = :postmark", env: 'production'
   end
 end
+
 
 
  # Git
