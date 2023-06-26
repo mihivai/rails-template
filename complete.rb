@@ -163,9 +163,6 @@ after_bundle do
     add_pages_home
 end
 
-# Generate a new Rails application
-rails_command "new . --database=postgresql --skip-test --skip-system-test"
-
 # Configure Turbo Streams for Rails 7
 initializer 'turbo_streams.rb', <<-CODE
 if Rails.application.config.respond_to?(:action_cable)
