@@ -6,6 +6,7 @@ using [Rails Templates](http://guides.rubyonrails.org/rails_application_template
 ## Complete
 
 ```bash
+rails new myapp active_admin:true postmark:false -m https://raw.githubusercontent.com/Christophertav/rails-template/master/complete.rb CHANGE_THIS_TO_YOUR_RAILS_APP_NAME
 rails new \
   active_admin:true \
   postmark:true \
