@@ -171,15 +171,15 @@ TXT
   run 'rm app/views/pages/home.html.erb'
   file 'app/views/pages/home.html.erb',
     add_pages_home
+
+
+  # Git
+  ########################################
+  git :init
+  git add: '.'
+  git commit: "-m 'Initial commit of Mihivai App'"
 end
 
 
-# Generate the Gemfile.lock
-run 'bundle install'
-
-
-# Git
-########################################
-git :init
-git add: '.'
-git commit: "-m 'Initial commit of Mihivai App'"
+# # Generate the Gemfile.lock
+# run 'bundle install'
