@@ -172,26 +172,26 @@ end
 CODE
 
 # Add Active Admin if specified
-if active_admin
-  gem 'devise-i18n'
+# if active_admin
+#   gem 'devise-i18n'
 
-  after_bundle do
-    generate 'active_admin:install'
-    generate 'devise:i18n:install'
-  end
-end
+#   after_bundle do
+#     generate 'active_admin:install'
+#     generate 'devise:i18n:install'
+#   end
+# end
 
 # Add Postmark if specified
-if postmark
-  after_bundle do
-    environment "config.action_mailer.delivery_method = :postmark", env: 'production'
-  end
-end
+# if postmark
+#   after_bundle do
+#     environment "config.action_mailer.delivery_method = :postmark", env: 'production'
+#   end
+# end
 
 
 
- # Git
-  ########################################
-  git :init
-  git add: '.'
-  git commit: "-m 'Initial commit of Mihivai App'"
+# Git
+########################################
+git :init
+git add: '.'
+git commit: "-m 'Initial commit of Mihivai App'"
