@@ -68,9 +68,6 @@ file 'Gemfile',
 ########################################
 file '.ruby-version', '3.1.0'
 
-# Generate the Gemfile.lock
-run 'bundle install'
-
 # Generators
 ########################################
 generators = <<~RUBY
@@ -183,6 +180,10 @@ if Rails.application.config.respond_to?(:action_cable)
   Rails.application.config.action_cable.mount_path = '/cable'
 end
 CODE
+
+
+# Generate the Gemfile.lock
+run 'bundle install'
 
 
 # Git
