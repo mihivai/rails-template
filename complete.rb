@@ -66,7 +66,7 @@ file 'Gemfile',
 
 # Ruby version
 ########################################
-file '.ruby-version', 3.1.0
+file '.ruby-version', '3.1.0'
 
 # Generate the Gemfile.lock
 run 'bundle install'
