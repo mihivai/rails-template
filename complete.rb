@@ -93,44 +93,43 @@ after_bundle do
   ########################################
   route 'root to: "pages#home"'
 
-
   # Git ignore
   ########################################
   run 'rm .gitignore'
   file '.gitignore', <<-TXT
-/.bundle
+    /.bundle
 
-# Ignore all logfiles and tempfiles.
-/log/*
-/tmp/*
-!/log/.keep
-!/tmp/.keep
+    # Ignore all logfiles and tempfiles.
+    /log/*
+    /tmp/*
+    !/log/.keep
+    !/tmp/.keep
 
-# Ignore pidfiles, but keep the directory.
-/tmp/pids/*
-!/tmp/pids/
-!/tmp/pids/.keep
+    # Ignore pidfiles, but keep the directory.
+    /tmp/pids/*
+    !/tmp/pids/
+    !/tmp/pids/.keep
 
-# Ignore uploaded files in development.
-/storage/*
-!/storage/.keep
-/tmp/storage/*
-!/tmp/storage/
-!/tmp/storage/.keep
+    # Ignore uploaded files in development.
+    /storage/*
+    !/storage/.keep
+    /tmp/storage/*
+    !/tmp/storage/
+    !/tmp/storage/.keep
 
-/public/assets
+    /public/assets
 
-# Ignore master key for decrypting credentials and more.
-/config/master.key
-.env*
+    # Ignore master key for decrypting credentials and more.
+    /config/master.key
+    .env*
 
-/config/credentials/development.key
+    /config/credentials/development.key
 
-/config/credentials/staging.key
+    /config/credentials/staging.key
 
-/config/credentials/production.key
+    /config/credentials/production.key
 
-TXT
+  TXT
 
   # Devise install + user
   ########################################
@@ -152,25 +151,23 @@ TXT
 
   # Pages Controller
   ########################################
-    run 'rm app/controllers/pages_controller.rb'
-    file 'app/controllers/pages_controller.rb', <<-RUBY
-  class PagesController < ApplicationController
-    skip_before_action :authenticate_user!, only: [:home, :legal]
+  run 'rm app/controllers/pages_controller.rb'
+  file 'app/controllers/pages_controller.rb', <<-RUBY
+    class PagesController < ApplicationController
+      skip_before_action :authenticate_user!, only: [:home, :legal]
 
-    def home
-    end
+      def home
+      end
 
-    def legal
+      def legal
+      end
     end
-  end
   RUBY
 
-  file 'app/views/pages/legal.html.erb',
-    add_pages_legal
+  file 'app/views/pages/legal.html.erb', add_pages_legal
 
   run 'rm app/views/pages/home.html.erb'
-  file 'app/views/pages/home.html.erb',
-    add_pages_home
+  file 'app/views/pages/home.html.erb', add_pages_home
 end
 
 # Configure Turbo Streams for Rails 7
