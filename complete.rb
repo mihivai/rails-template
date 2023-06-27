@@ -58,6 +58,21 @@ def add_pages_legal
   HTML
 end
 
+# Custom Seed
+file 'lib/tasks/custom_seed.rd', <<-RUBY
+  namespace :db do
+    namespace :seed do
+      Dir[Rails.root.join('db', 'seeds', '*.rb')].each do |filename|
+        task_name = File.basename(filename, '.rb')
+        desc "Seed " + task_name + ", based on the file with the same name in `db/seeds/*.rb`"
+        task task_name.to_sym => :environment do
+          load(filename) if File.exist?(filename)
+        end
+      end
+    end
+  end
+RUBY
+
 # GEMFILE
 ########################################
 run 'rm Gemfile'
@@ -219,7 +234,7 @@ after_bundle do
 
   # ImportMap
   run "bundle add importmap-rails"
-  run 'rails importmap:install'
+  generate('importmap:install')
 
   # file 'config/importmap.rb', <<-RUBY
   #   pin "application", preload: true
@@ -247,7 +262,7 @@ after_bundle do
   generate('simple_form:install')
 
   # Install Stimulus
-  run 'rails stimulus:install'
+  generate('stimulus:install')
 
   # Pages Controller
   ########################################
