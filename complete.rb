@@ -95,7 +95,7 @@ file 'app/assets/stylesheets/components/_index.scss', <<-CSS
 CSS
 
 
-file 'app/assets/stylesheets/config/_sizing.scss', <<-CSS
+file 'app/assets/stylesheets/config/_sizing.scss', <<-SCSS
 $sizes: 16px 20px 24px;
 
 @each $size in $sizes {
@@ -118,9 +118,9 @@ $sizes: 16px 20px 24px;
     min-width: $size;
   }
 }
-CSS
+SCSS
 
-file 'app/assets/stylesheets/config/_fonts.scss', <<-CSS
+file 'app/assets/stylesheets/config/_fonts.scss', <<-SCSS
 $font-sizes: 16px 20px 24px;
 
 @each $font-size in $font-sizes {
@@ -149,7 +149,7 @@ $font-sizes: 16px 20px 24px;
   }
 
 }
-CSS
+SCSS
 
 file 'app/assets/stylesheets/config/_colors.scss', <<-CSS
 CSS
