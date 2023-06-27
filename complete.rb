@@ -376,10 +376,8 @@ $sizes: 16px 20px 24px;
   }
 }
 
-$navheight: 70px;
-
 .page-min-height {
-  min-height: calc(100vh - #{$navheight})
+  min-height: calc(100vh - 70px)
 }
 SCSS
 
