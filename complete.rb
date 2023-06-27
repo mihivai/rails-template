@@ -226,6 +226,8 @@ import 'bootstrap'
   # generate('devise:views')
   run "bin/rails generate devise:views"
 
+  run "bin/rails db:migrate"
+
   run "rm app/controllers/application_controller.rb"
   file "app/controllers/application_controller.rb", <<~RUBY
 class ApplicationController < ActionController::Base
