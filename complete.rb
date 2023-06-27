@@ -123,28 +123,28 @@ SCSS
 file 'app/assets/stylesheets/config/_fonts.scss', <<-SCSS
 $fonts: 16px 20px 24px;
 
-@each $fonta in $fonts {
-  .font-size-#{$fonta} {
-    font-size: $fonta !important;
+@each $font in $fonts {
+  .font-size-#{$font} {
+    font-size: $font !important;
   }
   @media(min-width:768px) {
-    .font-size-md-#{$fonta} {
-    font-size: $fonta !important;
+    .font-size-md-#{$font} {
+    font-size: $font !important;
     }
   }
   @media(min-width:992px) {
-    .font-size-lg-#{$fonta} {
-    font-size: $fonta !important;
+    .font-size-lg-#{$font} {
+    font-size: $font !important;
     }
   }
   @media(min-width:1200px) {
-    .font-size-xl-#{$fonta} {
-    font-size: $fonta !important;
+    .font-size-xl-#{$font} {
+    font-size: $font !important;
     }
   }
   @media(min-width:1400px) {
-    .font-size-xxl-#{$fonta} {
-    font-size: $fonta !important;
+    .font-size-xxl-#{$font} {
+    font-size: $font !important;
     }
   }
 
