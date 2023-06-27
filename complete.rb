@@ -349,6 +349,8 @@ environment "config.action_mailer.delivery_method = :letter_opener", env: 'devel
 
 environment "config.action_mailer.default_url_options = { host: 'your-production-url.com' }", env: 'production'
 
+# Staging
+run 'curl -L https://raw.githubusercontent.com/Christophertav/rails-template/master/staging.rb > config/environments/staging.rb'
 
 
 # SCSS
