@@ -194,7 +194,8 @@ after_bundle do
 
   # ImportMap
   run "bundle add importmap-rails"
-  generate('importmap:install')
+  # generate('importmap:install')
+  run "bin/rails importmap:install"
 
   # file 'config/importmap.rb', <<-RUBY
   #   pin "application", preload: true
@@ -209,22 +210,30 @@ after_bundle do
 
   # Devise install + user
   ########################################
-  generate('devise:install')
-  generate('devise', 'User')
-  generate('devise:views')
+  # generate('devise:install')
+  run "bin/rails igenerate devise:install"
+  # generate('devise', 'User')
+  run "bin/rails generate devise User"
+  # generate('devise:views')
+  run "bin/rails generate devise:views"
 
   # Install Pundit
-  generate('pundit:install')
+  # generate('pundit:install')
+  run "bin/rails generate pundit:install"
 
   # Install Draper
-  generate('draper:install')
+  # generate('draper:install')
+  run "bin/rails generate draper:install"
 
   # Install Simple Form
-  generate('simple_form:install', '--bootstrap')
+  # generate('simple_form:install', '--bootstrap')
+  run "bin/rails generate simple_form:install --bootstrap"
 
   # Install Stimulus
-  generate('stimulus:install')
-  generate(:controller, "pages", "home", "--skip-routes", "--no-test-framework")
+  # generate('stimulus:install')
+  run "bin/rails generate stimulus:install"
+  # generate(:controller, "pages", "home", "--skip-routes", "--no-test-framework")
+  run "bin/rails generate controller pages home --skip-routes --to-test-framework"
 
   # Routes
   ########################################
