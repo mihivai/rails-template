@@ -239,7 +239,6 @@ TXT
   # ImportMap
   run 'bin/rails add importmap-rails'
   run 'bin/rails importmap:install'
-  run 'rm app/config/importmap.rb'
   file 'app/config/importmap.rb', <<-RUBY
 pin "application", preload: true
 pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
