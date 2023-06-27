@@ -207,9 +207,9 @@ after_bundle do
   # generate('simple_form:install', '--bootstrap')
   run "bin/rails generate simple_form:install --bootstrap"
 
-  file 'config/importmap.rb', <<-RUBY
-    pin "bootstrap", to: "https://ga.jspm.io/npm:bootstrap@5.1.3/dist/js/bootstrap.esm.js"
-    pin "@popperjs/core", to: "https://unpkg.com/@popperjs/core@2.11.2/dist/esm/index.js"
+   append_file "config/importmap.rb", <<~RUBY
+pin "bootstrap", to: "https://ga.jspm.io/npm:bootstrap@5.1.3/dist/js/bootstrap.esm.js"
+pin "@popperjs/core", to: "https://unpkg.com/@popperjs/core@2.11.2/dist/esm/index.js"
   RUBY
 
 
