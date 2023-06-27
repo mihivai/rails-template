@@ -189,6 +189,7 @@ CSS
 after_bundle do
   rails_command 'db:drop db:create db:migrate'
   generate(:controller, "pages", "home", "--skip-routes", "--no-test-framework")
+  puts '?????'
 
   # Routes
   ########################################
