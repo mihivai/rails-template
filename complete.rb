@@ -190,9 +190,9 @@ after_bundle do
   run "bin/rails db:migrate"
 
   # ImportMap
-  run "bundle add importmap-rails"
+  # run "bundle add importmap-rails"
   # generate('importmap:install')
-  run "bin/rails importmap:install"
+  # run "bin/rails importmap:install"
 
   # file 'config/importmap.rb', <<-RUBY
   #   pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
@@ -206,6 +206,11 @@ after_bundle do
   # Install Simple Form
   # generate('simple_form:install', '--bootstrap')
   run "bin/rails generate simple_form:install --bootstrap"
+
+  file 'config/importmap.rb', <<-RUBY
+    pin "bootstrap", to: "https://ga.jspm.io/npm:bootstrap@5.1.3/dist/js/bootstrap.esm.js"
+    pin "@popperjs/core", to: "https://unpkg.com/@popperjs/core@2.11.2/dist/esm/index.js"
+  RUBY
 
 
   # Devise install + user
@@ -236,7 +241,7 @@ end
 
   # Install Stimulus
   # generate('stimulus:install')
-  run "bin/rails generate stimulus:install"
+  # run "bin/rails generate stimulus:install"
   # generate(:controller, "pages", "home", "--skip-routes", "--no-test-framework")
   run "bin/rails generate controller pages home --skip-routes --to-test-framework"
 
