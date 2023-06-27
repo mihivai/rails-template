@@ -93,37 +93,16 @@ def add_layout
 
     <%= yield(:robots) %>
     <%= csrf_meta_tags %>
-    <%= action_cable_meta_tag %>
-    <%= stylesheet_link_tag 'application', media: 'all' %>
-    <%#= stylesheet_pack_tag 'bootstrap'%>
-    <%#= stylesheet_pack_tag 'application', media: 'all' %> <!-- Uncomment if you import CSS in app/javascript/packs/application.js -->
+    <%= csp_meta_tag %>
+    <<%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+    <%#= favicon_link_tag asset_path('favicon.ico') %> <!-- Uncomment for favicon -->
   </head>
   <body>
     <%= render 'shared/navbar' %>
     <%= render 'shared/flashes' %>
     <%= yield %>
     <%= render 'shared/footer' %>
-
-    <script type="application/ld+json">
-      {
-        "@context": "http://schema.org",
-        "@type": "Organization",
-        "name": "yourdomain",
-        "url": "https://www.yourdomain.com/",
-        "logo": "",
-        "contactPoint": [{
-          "@type": "ContactPoint",
-          "url": "https://www.yourdomain.com",
-          "email": "contact@yourdomain.com",
-          "telephone": "+33-30000000",
-          "contactType": "customer service"
-        }],
-        "image": "",
-        "description": ""
-      }
-    </script>
-    <%= javascript_include_tag 'application' %>
-    <%= javascript_pack_tag 'application' %>
   </body>
 </html>
 HTML
@@ -457,10 +436,8 @@ CSS
 
 
 # Layout
-if yes?("Would you like to add Google Analytics layout ?")
-  file 'app/views/layouts/_google_analytics.html.erb',
-    add_google_analytics
-end
+file 'app/views/layouts/_google_analytics.html.erb',
+  add_google_analytics
 
 run 'rm app/views/layouts/application.html.erb'
 file 'app/views/layouts/application.html.erb',
