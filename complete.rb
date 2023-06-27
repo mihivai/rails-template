@@ -213,7 +213,7 @@ after_bundle do
   # Devise install + user
   ########################################
   # generate('devise:install')
-  run "bin/rails igenerate devise:install"
+  run "bin/rails generate devise:install"
   # generate('devise', 'User')
   run "bin/rails generate devise User"
   # generate('devise:views')
