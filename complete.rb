@@ -237,8 +237,8 @@ TXT
   run 'bin/rails stimulus:install'
 
   # ImportMap
-  run 'bin/rails add importmap-rails'
-  run 'bin/rails importmap:install'
+  rails_command 'add importmap-rails'
+  rails_command 'importmap:install'
   file 'app/config/importmap.rb', <<-RUBY
 pin "application", preload: true
 pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
