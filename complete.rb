@@ -168,13 +168,14 @@ CSS
 file 'app/assets/stylesheets/config/_bootstrap_variables.scss', <<-CSS
 CSS
 
+run 'rm app/assets/stylesheets/application.css'
 file 'app/assets/stylesheets/application.scss', <<-CSS
 @import "config/fonts";
 @import "config/colors";
 @import "config/bootstrap_variables";
 
 // External libraries
-@import "bootstrap/scss/bootstrap";
+@import "bootstrap";
 @import "config/sizing";
 
 // Your CSS partials
