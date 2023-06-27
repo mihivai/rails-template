@@ -1,5 +1,3 @@
-run "if uname | grep -q 'Darwin'; then pgrep spring | xargs kill -9; fi"
-
 def add_gems
     <<-RUBY
   source 'https://rubygems.org'
@@ -189,6 +187,8 @@ CSS
 
 # Set up the database
 after_bundle do
+  run "if uname | grep -q 'Darwin'; then pgrep spring | xargs kill -9; fi"
+  run 'bin/spring stop'
   rails_command "db:drop db:create db:migrate"
 
 
