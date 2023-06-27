@@ -187,7 +187,41 @@ CSS
 
 # Set up the database
 after_bundle do
-  rails_command 'db:drop db:create db:migrate'
+  rails_command "db:drop db:create db:migrate"
+
+
+  # ImportMap
+  run "bundle add importmap-rails"
+  generate('importmap:install')
+
+  # file 'config/importmap.rb', <<-RUBY
+  #   pin "application", preload: true
+  #   pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
+  #   pin "@hotwired/stimulus", to: "https://ga.jspm.io/npm:@hotwired/stimulus@3.2.1/dist/stimulus.js"
+  #   pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
+  #   pin_all_from "app/javascript/controllers", under: "controllers"
+  #   pin "bootstrap", to: "https://ga.jspm.io/npm:bootstrap@5.1.3/dist/js/bootstrap.esm.js"
+  #   pin "@popperjs/core", to: "https://unpkg.com/@popperjs/core@2.11.2/dist/esm/index.js"
+  # RUBY
+
+
+  # Devise install + user
+  ########################################
+  generate('devise:install')
+  generate('devise', 'User')
+  generate('devise:views')
+
+  # Install Pundit
+  generate('pundit:install')
+
+  # Install Draper
+  generate('draper:install')
+
+  # Install Simple Form
+  generate('simple_form:install')
+
+  # Install Stimulus
+  generate('stimulus:install')
   generate(:controller, "pages", "home", "--skip-routes", "--no-test-framework")
   puts '?????'
 
@@ -232,38 +266,6 @@ after_bundle do
 
     /config/credentials/production.key
   TXT
-
-  # ImportMap
-  run "bundle add importmap-rails"
-  generate('importmap:install')
-
-  # file 'config/importmap.rb', <<-RUBY
-  #   pin "application", preload: true
-  #   pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
-  #   pin "@hotwired/stimulus", to: "https://ga.jspm.io/npm:@hotwired/stimulus@3.2.1/dist/stimulus.js"
-  #   pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
-  #   pin_all_from "app/javascript/controllers", under: "controllers"
-  #   pin "bootstrap", to: "https://ga.jspm.io/npm:bootstrap@5.1.3/dist/js/bootstrap.esm.js"
-  #   pin "@popperjs/core", to: "https://unpkg.com/@popperjs/core@2.11.2/dist/esm/index.js"
-  # RUBY
-
-  # Devise install + user
-  ########################################
-  generate('devise:install')
-  generate('devise', 'User')
-  generate('devise:views')
-
-  # Install Pundit
-  generate('pundit:install')
-
-  # Install Draper
-  generate('draper:install')
-
-  # Install Simple Form
-  generate('simple_form:install')
-
-  # Install Stimulus
-  generate('stimulus:install')
 
   # Pages Controller
   ########################################
