@@ -94,7 +94,7 @@ def add_layout
     <%= yield(:robots) %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <<%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <%#= favicon_link_tag asset_path('favicon.ico') %> <!-- Uncomment for favicon -->
   </head>
@@ -519,6 +519,7 @@ end
   # Routes
   ########################################
   route 'root to: "pages#home"'
+  route "get '/legal', to: 'pages#legal', as: 'legal'"
 
 
   # Git ignore
