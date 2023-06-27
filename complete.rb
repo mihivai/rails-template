@@ -46,6 +46,23 @@ def install_postmark
   environment "config.action_mailer.delivery_method     = :postmark", env: 'production'
   environment "config.action_mailer.postmark_settings   = { api_token: ENV['POSTMARK_API_TOKEN'] }", env: 'production'
   environment "config.action_mailer.default_url_options = { host: ENV['DOMAIN'] }", env: 'production'
+
+  file 'config/initializers/email_interceptor.rb', <<-RUBY
+# if Rails.env.production? || Rails.env.staging?
+if Rails.env.staging?
+  require "email_interceptor"
+  ActionMailer::Base.register_interceptor(EmailInterceptor)
+end
+RUBY
+
+file 'lib/email_interceptor.rb', <<-RUBY
+class EmailInterceptor
+  def self.delivering_email(message)
+    message.subject = "[PREPROD]" + message.to.to_s + " " + message.subject
+    message.to = [ ENV['DEFAULT_EMAIL_INTERCEPTOR'] ]
+  end
+end
+RUBY
 end
 
 def add_pages_home
