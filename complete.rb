@@ -335,13 +335,13 @@ environment "config.action_mailer.default_url_options = { host: 'your-production
 
 
 # SCSS
+file 'app/assets/stylesheets/components/_utilities.scss', <<-CSS
+CSS
 
 run 'curl -L https://raw.githubusercontent.com/Christophertav/rails-template/master/navbar.scss > app/assets/stylesheets/components/_navbar.scss'
 run 'curl -L https://raw.githubusercontent.com/Christophertav/rails-template/master/footer.scss > app/assets/stylesheets/components/_footer.scss'
 
 
-file 'app/assets/stylesheets/components/_utilities.scss', <<-CSS
-CSS
 
 
 file 'app/assets/stylesheets/components/_index.scss', <<-CSS
