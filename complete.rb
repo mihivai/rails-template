@@ -1,3 +1,5 @@
+run "if uname | grep -q 'Darwin'; then pgrep spring | xargs kill -9; fi"
+
 def add_gems
     <<-RUBY
   source 'https://rubygems.org'
@@ -218,12 +220,11 @@ after_bundle do
   generate('draper:install')
 
   # Install Simple Form
-  generate('simple_form:install')
+  generate('simple_form:install', '--bootstrap')
 
   # Install Stimulus
   generate('stimulus:install')
   generate(:controller, "pages", "home", "--skip-routes", "--no-test-framework")
-  puts '?????'
 
   # Routes
   ########################################
