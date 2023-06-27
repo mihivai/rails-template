@@ -350,15 +350,15 @@ environment "config.action_mailer.delivery_method = :letter_opener", env: 'devel
 environment "config.action_mailer.default_url_options = { host: 'your-production-url.com' }", env: 'production'
 
 # Staging
-run 'curl -L https://raw.githubusercontent.com/Christophertav/rails-template/master/staging.rb > config/environments/staging.rb'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/staging.rb > config/environments/staging.rb'
 
 
 # SCSS
 file 'app/assets/stylesheets/components/_utilities.scss', <<-CSS
 CSS
 
-run 'curl -L https://raw.githubusercontent.com/Christophertav/rails-template/master/navbar.scss > app/assets/stylesheets/components/_navbar.scss'
-run 'curl -L https://raw.githubusercontent.com/Christophertav/rails-template/master/footer.scss > app/assets/stylesheets/components/_footer.scss'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/navbar.scss > app/assets/stylesheets/components/_navbar.scss'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/footer.scss > app/assets/stylesheets/components/_footer.scss'
 
 
 
@@ -482,8 +482,8 @@ file 'public/422.html',
 file 'app/views/shared/_navbar.html.erb',
   add_navbar
 
-run 'curl -L https://raw.githubusercontent.com/Christophertav/rails-template/master/logo.png > app/assets/images/logo.png'
-run 'curl -L https://raw.githubusercontent.com/Christophertav/rails-template/master/logo.png > public/logo.png'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/logo.png > app/assets/images/logo.png'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/logo.png > public/logo.png'
 
 # README
 ########################################
