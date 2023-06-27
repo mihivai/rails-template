@@ -190,6 +190,13 @@ after_bundle do
   run "bin/rails db:migrate"
 
 
+  append_file "app/javascript/application.js", <<~JS
+    import "@hotwired/turbo-rails"
+    import "controllers"
+    import 'bootstrap'
+  JS
+
+
   # ImportMap
   run "bundle add importmap-rails"
   # generate('importmap:install')
