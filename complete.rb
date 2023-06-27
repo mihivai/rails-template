@@ -59,7 +59,7 @@ def add_pages_legal
 end
 
 # Custom Seed
-file 'lib/tasks/custom_seed.rd', <<-RUBY
+file 'lib/tasks/custom_seed.rb', <<-RUBY
   namespace :db do
     namespace :seed do
       Dir[Rails.root.join('db', 'seeds', '*.rb')].each do |filename|
