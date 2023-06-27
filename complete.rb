@@ -24,7 +24,7 @@ end
 group :development do
   gem 'letter_opener'
   gem "web-console"
-  end
+end
 
 group :test do
   gem "capybara"
