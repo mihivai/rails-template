@@ -188,8 +188,10 @@ CSS
 # Set up the database
 after_bundle do
   run "if uname | grep -q 'Darwin'; then pgrep spring | xargs kill -9; fi"
-  run 'bin/spring stop'
-  rails_command "db:drop db:create db:migrate"
+  # rails_command "db:drop db:create db:migrate"
+  run "bin/rails db:drop"
+  run "bin/rails db:create"
+  run "bin/rails db:migrate"
 
 
   # ImportMap
