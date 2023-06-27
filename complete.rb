@@ -84,6 +84,93 @@ environment "config.action_mailer.default_url_options = { host: 'localhost', por
 environment "config.action_mailer.default_url_options = { host: 'your-production-url.com' }", env: 'production'
 
 
+# SCSS
+file 'app/assets/stylesheets/components/_utilities.scss', <<-CSS
+CSS
+
+
+file 'app/assets/stylesheets/components/_index.scss', <<-CSS
+// Import your layouts CSS files here.
+@import "sizing";
+@import "utilities";
+CSS
+
+
+file 'app/assets/stylesheets/config/_sizing.scss', <<-CSS
+$sizes: 16px 20px 24px;
+
+@each $size in $sizes {
+  .height-#{$size} {
+    height: $size;
+  }
+  .width-#{$size} {
+    width: $size;
+  }
+  .max-height-#{$size} {
+    max-height: $size;
+  }
+  .max-width-#{$size} {
+    max-width: $size;
+  }
+  .min-height-#{$size} {
+    min-height: $size;
+  }
+  .min-width-#{$size} {
+    min-width: $size;
+  }
+}
+CSS
+
+file 'app/assets/stylesheets/config/_fonts.scss', <<-CSS
+$font-sizes: 16px 20px 24px;
+
+@each $font-size in $font-sizes {
+  .font-size-#{$font-size} {
+    font-size: $font-size !important;
+  }
+  @media(min-width:768px) {
+    .font-size-md-#{$font-size} {
+    font-size: $font-size !important;
+    }
+  }
+  @media(min-width:992px) {
+    .font-size-lg-#{$font-size} {
+    font-size: $font-size !important;
+    }
+  }
+  @media(min-width:1200px) {
+    .font-size-xl-#{$font-size} {
+    font-size: $font-size !important;
+    }
+  }
+  @media(min-width:1400px) {
+    .font-size-xxl-#{$font-size} {
+    font-size: $font-size !important;
+    }
+  }
+
+}
+CSS
+
+file 'app/assets/stylesheets/config/_colors.scss', <<-CSS
+CSS
+
+file 'app/assets/stylesheets/config/_bootstrap_variables.scss', <<-CSS
+CSS
+
+file 'app/assets/stylesheets/application.scss', <<-CSS
+@import "config/fonts";
+@import "config/colors";
+@import "config/bootstrap_variables";
+
+// External libraries
+@import "bootstrap/scss/bootstrap";
+@import "config/sizing";
+
+// Your CSS partials
+@import "components/index";
+CSS
+
 # Set up the database
 after_bundle do
   rails_command 'db:drop db:create db:migrate'
@@ -139,16 +226,31 @@ TXT
   generate('devise:views')
 
   # Install Pundit
-  generate 'pundit:install'
+  generate('pundit:install')
 
   # Install Draper
-  generate 'draper:install'
+  generate('draper:install')
 
   # Install Simple Form
-  generate 'simple_form:install'
+  generate('simple_form:install')
 
   # Install Stimulus
   run 'bin/rails stimulus:install'
+
+  # ImportMap
+  run 'bin/rails add importmap-rails'
+  run 'bin/rails importmap:install'
+  run 'rm app/config/importmap.rb'
+  file 'app/config/importmap.rb', <<-RUBY
+pin "application", preload: true
+pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
+pin "@hotwired/stimulus", to: "https://ga.jspm.io/npm:@hotwired/stimulus@3.2.1/dist/stimulus.js"
+pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
+pin_all_from "app/javascript/controllers", under: "controllers"
+pin "bootstrap", to: "https://ga.jspm.io/npm:bootstrap@5.1.3/dist/js/bootstrap.esm.js"
+pin "@popperjs/core", to: "https://unpkg.com/@popperjs/core@2.11.2/dist/esm/index.js"
+RUBY
+
 
   # Pages Controller
   ########################################
