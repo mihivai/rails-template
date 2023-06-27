@@ -90,65 +90,65 @@ CSS
 
 
 file 'app/assets/stylesheets/components/_index.scss', <<-CSS
-// Import your layouts CSS files here.
-@import "utilities";
+  // Import your layouts CSS files here.
+  @import "utilities";
 CSS
 
 
 file 'app/assets/stylesheets/config/_sizing.scss', <<-SCSS
-$sizes: 16px 20px 24px;
+  $sizes: 16px 20px 24px;
 
-@each $size in $sizes {
-  .height-#{$size} {
-    height: $size;
+  @each $size in $sizes {
+    .height-#{$size} {
+      height: $size;
+    }
+    .width-#{$size} {
+      width: $size;
+    }
+    .max-height-#{$size} {
+      max-height: $size;
+    }
+    .max-width-#{$size} {
+      max-width: $size;
+    }
+    .min-height-#{$size} {
+      min-height: $size;
+    }
+    .min-width-#{$size} {
+      min-width: $size;
+    }
   }
-  .width-#{$size} {
-    width: $size;
-  }
-  .max-height-#{$size} {
-    max-height: $size;
-  }
-  .max-width-#{$size} {
-    max-width: $size;
-  }
-  .min-height-#{$size} {
-    min-height: $size;
-  }
-  .min-width-#{$size} {
-    min-width: $size;
-  }
-}
 SCSS
 
 file 'app/assets/stylesheets/config/_fonts.scss', <<-SCSS
-$fonts: 16px 20px 24px;
+  $fonts: 16px 20px 24px;
 
-@each $font in $fonts {
-  .font-size-#{$font} {
-    font-size: $font !important;
-  }
-  @media(min-width:768px) {
-    .font-size-md-#{$font} {
-    font-size: $font !important;
+  @each $font in $fonts {
+    .font-size-#{$font} {
+      font-size: $font !important;
     }
-  }
-  @media(min-width:992px) {
-    .font-size-lg-#{$font} {
-    font-size: $font !important;
+    @media(min-width:768px) {
+      .font-size-md-#{$font} {
+      font-size: $font !important;
+      }
     }
-  }
-  @media(min-width:1200px) {
-    .font-size-xl-#{$font} {
-    font-size: $font !important;
+    @media(min-width:992px) {
+      .font-size-lg-#{$font} {
+      font-size: $font !important;
+      }
     }
-  }
-  @media(min-width:1400px) {
-    .font-size-xxl-#{$font} {
-    font-size: $font !important;
+    @media(min-width:1200px) {
+      .font-size-xl-#{$font} {
+      font-size: $font !important;
+      }
     }
-  }
+    @media(min-width:1400px) {
+      .font-size-xxl-#{$font} {
+      font-size: $font !important;
+      }
+    }
 
-}
+  }
 SCSS
 
 file 'app/assets/stylesheets/config/_colors.scss', <<-CSS
@@ -158,16 +158,16 @@ file 'app/assets/stylesheets/config/_bootstrap_variables.scss', <<-CSS
 CSS
 
 file 'app/assets/stylesheets/application.scss', <<-CSS
-@import "config/fonts";
-@import "config/colors";
-@import "config/bootstrap_variables";
+  @import "config/fonts";
+  @import "config/colors";
+  @import "config/bootstrap_variables";
 
-// External libraries
-@import "bootstrap/scss/bootstrap";
-@import "config/sizing";
+  // External libraries
+  @import "bootstrap/scss/bootstrap";
+  @import "config/sizing";
 
-// Your CSS partials
-@import "components/index";
+  // Your CSS partials
+  @import "components/index";
 CSS
 
 # Set up the database
@@ -239,31 +239,30 @@ TXT
   # ImportMap
   rails_command 'add importmap-rails'
   rails_command 'importmap:install'
-  file 'app/config/importmap.rb', <<-RUBY
-pin "application", preload: true
-pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
-pin "@hotwired/stimulus", to: "https://ga.jspm.io/npm:@hotwired/stimulus@3.2.1/dist/stimulus.js"
-pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
-pin_all_from "app/javascript/controllers", under: "controllers"
-pin "bootstrap", to: "https://ga.jspm.io/npm:bootstrap@5.1.3/dist/js/bootstrap.esm.js"
-pin "@popperjs/core", to: "https://unpkg.com/@popperjs/core@2.11.2/dist/esm/index.js"
-RUBY
-
+  file 'config/importmap.rb', <<-RUBY
+    pin "application", preload: true
+    pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
+    pin "@hotwired/stimulus", to: "https://ga.jspm.io/npm:@hotwired/stimulus@3.2.1/dist/stimulus.js"
+    pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
+    pin_all_from "app/javascript/controllers", under: "controllers"
+    pin "bootstrap", to: "https://ga.jspm.io/npm:bootstrap@5.1.3/dist/js/bootstrap.esm.js"
+    pin "@popperjs/core", to: "https://unpkg.com/@popperjs/core@2.11.2/dist/esm/index.js"
+  RUBY
 
   # Pages Controller
   ########################################
     run 'rm app/controllers/pages_controller.rb'
     file 'app/controllers/pages_controller.rb', <<-RUBY
-  class PagesController < ApplicationController
-    skip_before_action :authenticate_user!, only: [:home, :legal]
+      class PagesController < ApplicationController
+        skip_before_action :authenticate_user!, only: [:home, :legal]
 
-    def home
-    end
+        def home
+        end
 
-    def legal
-    end
-  end
-  RUBY
+        def legal
+        end
+      end
+    RUBY
 
   file 'app/views/pages/legal.html.erb',
     add_pages_legal
