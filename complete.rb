@@ -581,6 +581,42 @@ end
     add_pages_home
 
 
+     # Creation des Meta
+  ########################################
+
+file 'config/meta.yml', <<-YAML
+meta_product_name: "Product Name"
+meta_title: "Product name - Product tagline"
+meta_description: "Relevant description"
+meta_image: "logo.png" # should exist in `app/assets/images/`
+YAML
+
+file 'config/initializers/default_meta.rb', <<-RUBY
+DEFAULT_META = YAML.load_file(Rails.root.join("config/meta.yml"))
+RUBY
+
+
+file 'app/helpers/meta_tags_helper.rb', <<-RUBY
+module MetaTagsHelper
+  def meta_title
+    content_for?(:meta_title) ? content_for(:meta_title) : DEFAULT_META["meta_title"]
+  end
+
+  def meta_description
+    content_for?(:meta_description) ? content_for(:meta_description) : DEFAULT_META["meta_description"]
+  end
+
+  def meta_image
+    meta_image = (content_for?(:meta_image) ? content_for(:meta_image) : DEFAULT_META["meta_image"])
+    # little twist to make it work equally with an asset or a url
+    meta_image.starts_with?("http") ? meta_image : image_url(meta_image)
+  end
+
+  # def meta_keywords
+  #   content_for?(:meta_keywords) ? content_for(:meta_keywords) : DEFAULT_META["meta_keywords"]
+  # end
+end
+RUBY
   # Git
   ########################################
   git :init
