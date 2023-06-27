@@ -41,6 +41,13 @@ def install_active_admin
   run "bin/rails db:seed"
 end
 
+def install_postmark
+  run "postmark-rails"
+  environment "config.action_mailer.delivery_method     = :postmark", env: 'production'
+  environment "config.action_mailer.postmark_settings   = { api_token: ENV['POSTMARK_API_TOKEN'] }", env: 'production'
+  environment "config.action_mailer.default_url_options = { host: ENV['DOMAIN'] }", env: 'production'
+end
+
 def add_pages_home
   <<-HTML
 <%= content_for :meta_title, "Yourdomain - Your Meta" %>
@@ -63,6 +70,249 @@ def add_pages_legal
   <p>Find me in app/views/pages/legal.html.erb</p>
 </div>
   HTML
+end
+
+def add_layout
+<<-HTML
+<!DOCTYPE html>
+<html>
+  <head>
+    <%= render "layouts/google_analytics" %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title><%= meta_title %></title>
+    <meta name="description" content="<%= meta_description %>">
+    <!-- Facebook Open Graph data -->
+    <meta property="og:title" content="<%= meta_title %>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<%= request.original_url %>" />
+    <meta property="og:image" content="<%= meta_image %>" />
+    <meta property="og:description" content="<%= meta_description %>" />
+    <meta property="og:site_name" content="<%= meta_title %>" />
+
+    <%= yield(:robots) %>
+    <%= csrf_meta_tags %>
+    <%= action_cable_meta_tag %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%#= stylesheet_pack_tag 'bootstrap'%>
+    <%#= stylesheet_pack_tag 'application', media: 'all' %> <!-- Uncomment if you import CSS in app/javascript/packs/application.js -->
+  </head>
+  <body>
+    <%= render 'shared/navbar' %>
+    <%= render 'shared/flashes' %>
+    <%= yield %>
+    <%= render 'shared/footer' %>
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "yourdomain",
+        "url": "https://www.yourdomain.com/",
+        "logo": "",
+        "contactPoint": [{
+          "@type": "ContactPoint",
+          "url": "https://www.yourdomain.com",
+          "email": "contact@yourdomain.com",
+          "telephone": "+33-30000000",
+          "contactType": "customer service"
+        }],
+        "image": "",
+        "description": ""
+      }
+    </script>
+    <%= javascript_include_tag 'application' %>
+    <%= javascript_pack_tag 'application' %>
+  </body>
+</html>
+HTML
+end
+
+def add_flash
+<<-HTML
+<% if notice %>
+  <div class="alert alert-info alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <%= notice %>
+  </div>
+<% end %>
+<% if alert %>
+  <div class="alert alert-warning alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <%= alert %>
+  </div>
+<% end %>
+HTML
+end
+
+def add_google_analytics
+<<-HTML
+<% if Rails.env == "production"  %>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=<%= ENV['GOOGLE_ANALYTICS_KEY'] %>"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', "<%= ENV['GOOGLE_ANALYTICS_KEY'] %>");
+  </script>
+<% end %>
+HTML
+end
+
+def update_error_page(var)
+<<-HTML
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Yourdomain - Erreur</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8">
+  <style>
+    body {
+        background-color: white;
+        color: #2E2F30;
+        text-align: center;
+        font-family: arial, sans-serif;
+        margin: 20px;
+      }
+
+      .banner-logo img {
+        max-width: 90%;
+      }
+
+      .container {
+        margin: 40px auto;
+      }
+      h1 {
+        font-size: 32px;
+        margin: 0px;
+      }
+      p {
+        font-size: 20px;
+      }
+      .link_mail_to {
+        text-decoration: none;
+        color: #2e2f30ad;
+      }
+      .link_mail_to:hover {
+        text-decoration: none;
+        color: #2E2F30;
+      }
+      .button-green {
+        border-radius: 2px;
+        margin: 20px 0px;
+        text-decoration: none;
+        padding: 10px 41px;
+        color: white;
+        background-color: #888485;
+        font-weight: lighter;
+      }
+     .button-green:hover {
+        text-decoration: none;
+        background-color: #a7a4a5;
+      }
+    </style>
+  </head>
+
+  <body class="rails-default-error-page">
+    <!-- This file lives in public/500.html -->
+      <div class="banner-logo">
+        <img src="logo.png" alt="logo">
+      </div>
+      <div class="container">
+        <h1>
+          Page d'erreur
+        </h1>
+        <p>
+          Une erreur est revenue. <br> Veuillez nous excuser pour la gêne occasionée.
+        </p>
+         <p>
+          N'hésitez pas à retourner sur la page précédente et à réessayer.
+        </p>
+        <p>
+          <a class="link_mail_to" href="mailto:contact@mihivai.com">Reporter le probléme</a>
+        </p>
+      </div>
+      <div class="container">
+        <a class="button-green" href="/">Retour sur le site</a>
+      </div>
+
+  </body>
+</html>
+HTML
+end
+
+def add_navbar
+<<-HTML
+<div class="navbar-mihivai">
+  <!-- Logo -->
+  <a href="/" class="navbar-mihivai-brand">
+    <%= image_tag "logo.png" %>
+  </a>
+
+  <div class="d-none d-md-block">
+    <div class="d-flex align-items-center justify-content-between">
+      <%= link_to "Notre Activité", "#", class: "navbar-mihivai-item navbar-mihivai-link" %>
+      <%= link_to "Nos Services", "/", class: "navbar-mihivai-item navbar-mihivai-link" %>
+      <%= link_to "Contact", "/", class: "navbar-mihivai-item navbar-mihivai-link" %>
+      <% if user_signed_in? %>
+        <%= link_to t(".sign_out", default: "Log out"), destroy_user_session_path, method: :delete , class: "navbar-mihivai-item navbar-mihivai-link"%>
+      <% else %>
+        <%= link_to t(".sign_in", default: "Login"), new_user_session_path , class: "navbar-mihivai-item navbar-mihivai-link"%>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="d-block d-md-none">
+    <div class="navbar-dropdown">
+      <input id="toggle" type="checkbox"/>
+      <label class="hamburger" for="toggle">
+        <div class="top"></div>
+        <div class="meat"></div>
+        <div class="bottom"></div>
+      </label>
+
+      <div class="nav">
+        <div class="nav-wrapper">
+          <nav class= "d-flex flex-column">
+            <%= link_to "Accueil", root_path, class: "navbar-link" %>
+            <% if user_signed_in? %>
+              <%= link_to "Se Déconnecter", destroy_user_session_path, class: "navbar-link", method: :delete %>
+            <% else %>
+              <%= link_to "Créer un Compte", new_user_registration_path, class: "navbar-link" %>
+              <%= link_to "Se Connecter", new_user_session_path,  class: "navbar-link" %>
+            <% end %>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div style="height: 70px;"></div>
+
+HTML
+end
+
+def add_footer
+<<-HTML
+<div class="footer d-flex justify-content-between align-items-center">
+  <div class="footer-links">
+  </div>
+  <div class="footer-copyright d-flex flex-column">
+    © 2018 Your Domain
+    <%= link_to legal_path do %>
+      Mentions légales
+    <% end %>
+    <%= link_to "https://www.mihivai.com/", target: "_blank" do %>
+      Site réalisé par Mihivai
+    <% end %>
+  </div>
+</div>
+HTML
 end
 
 # Custom Seed
@@ -99,43 +349,59 @@ RUBY
 environment generators
 
 environment "config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }", env: 'development'
+environment "config.action_mailer.delivery_method = :letter_opener", env: 'development'
+
 environment "config.action_mailer.default_url_options = { host: 'your-production-url.com' }", env: 'production'
 
 
+
 # SCSS
+
+run 'curl -L https://raw.githubusercontent.com/Christophertav/rails-template/master/navbar.scss > app/assets/stylesheets/components/_navbar.scss'
+run 'curl -L https://raw.githubusercontent.com/Christophertav/rails-template/master/footer.scss > app/assets/stylesheets/components/_footer.scss'
+
+
 file 'app/assets/stylesheets/components/_utilities.scss', <<-CSS
 CSS
 
 
 file 'app/assets/stylesheets/components/_index.scss', <<-CSS
   // Import your layouts CSS files here.
-  @import "utilities";
+@import "footer";
+@import "navbar";
+@import "utilities";
 CSS
 
 
 file 'app/assets/stylesheets/config/_sizing.scss', <<-SCSS
-  $sizes: 16px 20px 24px;
+$sizes: 16px 20px 24px;
 
-  @each $size in $sizes {
-    .height-#{$size} {
-      height: $size;
-    }
-    .width-#{$size} {
-      width: $size;
-    }
-    .max-height-#{$size} {
-      max-height: $size;
-    }
-    .max-width-#{$size} {
-      max-width: $size;
-    }
-    .min-height-#{$size} {
-      min-height: $size;
-    }
-    .min-width-#{$size} {
-      min-width: $size;
-    }
+@each $size in $sizes {
+  .height-#{$size} {
+    height: $size;
   }
+  .width-#{$size} {
+    width: $size;
+  }
+  .max-height-#{$size} {
+    max-height: $size;
+  }
+  .max-width-#{$size} {
+    max-width: $size;
+  }
+  .min-height-#{$size} {
+    min-height: $size;
+  }
+  .min-width-#{$size} {
+    min-width: $size;
+  }
+}
+
+$nav-height: 70px;
+
+.page-min-height {
+  min-height: calc(100vh - #{$nav-height})
+}
 SCSS
 
 file 'app/assets/stylesheets/config/_fonts.scss', <<-SCSS
@@ -190,35 +456,57 @@ file 'app/assets/stylesheets/application.scss', <<-CSS
 CSS
 
 
-# Active admin
-ACTIVEADMIN = ARGV.include?('--with-active-admin')
+# Layout
+if yes?("Would you like to add Google Analytics layout ?")
+  file 'app/views/layouts/_google_analytics.html.erb',
+    add_google_analytics
+end
+
+run 'rm app/views/layouts/application.html.erb'
+file 'app/views/layouts/application.html.erb',
+  add_layout
+
+file 'app/views/shared/_flashes.html.erb',
+  add_flash
+
+file 'app/views/shared/_footer.html.erb',
+  add_footer
+
+run 'rm public/500.html'
+file 'public/500.html',
+  update_error_page(500)
+
+run 'rm public/404.html'
+file 'public/404.html',
+  update_error_page(404)
+
+run 'rm public/422.html'
+file 'public/422.html',
+  update_error_page(422)
+
+
+file 'app/views/shared/_navbar.html.erb',
+  add_navbar
+
+run 'curl -L https://raw.githubusercontent.com/Christophertav/rails-template/master/logo.png > app/assets/images/logo.png'
+run 'curl -L https://raw.githubusercontent.com/Christophertav/rails-template/master/logo.png > public/logo.png'
+
+# README
+########################################
+markdown_file_content = <<-MARKDOWN
+Rails app generated with MihiVai template.
+MARKDOWN
+file 'README.md', markdown_file_content, force: true
 
 
 
-# Set up the database
 after_bundle do
   run "if uname | grep -q 'Darwin'; then pgrep spring | xargs kill -9; fi"
-  # rails_command "db:drop db:create db:migrate"
   run "bin/rails db:drop"
   run "bin/rails db:create"
   run "bin/rails db:migrate"
 
-  # ImportMap
-  # run "bundle add importmap-rails"
-  # generate('importmap:install')
-  # run "bin/rails importmap:install"
 
-  # file 'config/importmap.rb', <<-RUBY
-  #   pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
-  #   pin "@hotwired/stimulus", to: "https://ga.jspm.io/npm:@hotwired/stimulus@3.2.1/dist/stimulus.js"
-  #   pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
-  #   pin_all_from "app/javascript/controllers", under: "controllers"
-  #   pin "bootstrap", to: "https://ga.jspm.io/npm:bootstrap@5.1.3/dist/js/bootstrap.esm.js"
-  #   pin "@popperjs/core", to: "https://unpkg.com/@popperjs/core@2.11.2/dist/esm/index.js"
-  # RUBY
-
-  # Install Simple Form
-  # generate('simple_form:install', '--bootstrap')
   run "bin/rails generate simple_form:install --bootstrap"
 
    append_file "config/importmap.rb", <<~RUBY
@@ -226,14 +514,8 @@ pin "bootstrap", to: "https://ga.jspm.io/npm:bootstrap@5.1.3/dist/js/bootstrap.e
 pin "@popperjs/core", to: "https://unpkg.com/@popperjs/core@2.11.2/dist/esm/index.js"
   RUBY
 
-
-  # Devise install + user
-  ########################################
-  # generate('devise:install')
   run "bin/rails generate devise:install"
-  # generate('devise', 'User')
   run "bin/rails generate devise User"
-  # generate('devise:views')
   run "bin/rails generate devise:views"
 
   run "bin/rails db:migrate"
@@ -245,21 +527,16 @@ class ApplicationController < ActionController::Base
 end
   RUBY
 
-  # Install Pundit
-  # generate('pundit:install')
   run "bin/rails generate pundit:install"
 
-  # Install Draper
-  # generate('draper:install')
   run "bin/rails generate draper:install"
 
   # active admin
   install_active_admin if yes?("Would you like to install ActiveAdmin ?")
 
-  # Install Stimulus
-  # generate('stimulus:install')
-  # run "bin/rails generate stimulus:install"
-  # generate(:controller, "pages", "home", "--skip-routes", "--no-test-framework")
+  # postmark
+  install_postmark if yes?("Would you like to install Postmark ?")
+
   run "bin/rails generate controller pages home --skip-routes --to-test-framework"
 
   # Routes
@@ -333,7 +610,3 @@ end
   git add: '.'
   git commit: "-m 'Initial commit of Mihivai App'"
 end
-
-
-# # Generate the Gemfile.lock
-# run 'bundle install'
