@@ -91,7 +91,6 @@ CSS
 
 file 'app/assets/stylesheets/components/_index.scss', <<-CSS
 // Import your layouts CSS files here.
-@import "sizing";
 @import "utilities";
 CSS
 
