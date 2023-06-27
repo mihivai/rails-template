@@ -1,7 +1,7 @@
 def add_gems
     <<-RUBY
   source 'https://rubygems.org'
-  ruby '3.1.0'
+  ruby '#{RUBY_VERSION}'
   gem 'rails', "~> 7.0.4"
   gem 'pg', "~> 1.1"
   gem "puma", "~> 5.0"
@@ -78,10 +78,6 @@ RUBY
 run 'rm Gemfile'
 file 'Gemfile',
   add_gems
-
-# Ruby version
-########################################
-file '.ruby-version', '3.1.0'
 
 # Generators
 ########################################
