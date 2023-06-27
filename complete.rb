@@ -184,39 +184,52 @@ after_bundle do
   ########################################
   run 'rm .gitignore'
   file '.gitignore', <<-TXT
-/.bundle
+    /.bundle
 
-# Ignore all logfiles and tempfiles.
-/log/*
-/tmp/*
-!/log/.keep
-!/tmp/.keep
+    # Ignore all logfiles and tempfiles.
+    /log/*
+    /tmp/*
+    !/log/.keep
+    !/tmp/.keep
 
-# Ignore pidfiles, but keep the directory.
-/tmp/pids/*
-!/tmp/pids/
-!/tmp/pids/.keep
+    # Ignore pidfiles, but keep the directory.
+    /tmp/pids/*
+    !/tmp/pids/
+    !/tmp/pids/.keep
 
-# Ignore uploaded files in development.
-/storage/*
-!/storage/.keep
-/tmp/storage/*
-!/tmp/storage/
-!/tmp/storage/.keep
+    # Ignore uploaded files in development.
+    /storage/*
+    !/storage/.keep
+    /tmp/storage/*
+    !/tmp/storage/
+    !/tmp/storage/.keep
 
-/public/assets
+    /public/assets
 
-# Ignore master key for decrypting credentials and more.
-/config/master.key
-.env*
+    # Ignore master key for decrypting credentials and more.
+    /config/master.key
+    .env*
 
-/config/credentials/development.key
+    /config/credentials/development.key
 
-/config/credentials/staging.key
+    /config/credentials/staging.key
 
-/config/credentials/production.key
+    /config/credentials/production.key
+  TXT
 
-TXT
+  # ImportMap
+  run "bundle add importmap-rails"
+  run 'rails importmap:install'
+
+  # file 'config/importmap.rb', <<-RUBY
+  #   pin "application", preload: true
+  #   pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
+  #   pin "@hotwired/stimulus", to: "https://ga.jspm.io/npm:@hotwired/stimulus@3.2.1/dist/stimulus.js"
+  #   pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
+  #   pin_all_from "app/javascript/controllers", under: "controllers"
+  #   pin "bootstrap", to: "https://ga.jspm.io/npm:bootstrap@5.1.3/dist/js/bootstrap.esm.js"
+  #   pin "@popperjs/core", to: "https://unpkg.com/@popperjs/core@2.11.2/dist/esm/index.js"
+  # RUBY
 
   # Devise install + user
   ########################################
@@ -234,20 +247,7 @@ TXT
   generate('simple_form:install')
 
   # Install Stimulus
-  run 'bin/rails stimulus:install'
-
-  # ImportMap
-  rails_command 'add importmap-rails'
-  rails_command 'importmap:install'
-  file 'config/importmap.rb', <<-RUBY
-    pin "application", preload: true
-    pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
-    pin "@hotwired/stimulus", to: "https://ga.jspm.io/npm:@hotwired/stimulus@3.2.1/dist/stimulus.js"
-    pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
-    pin_all_from "app/javascript/controllers", under: "controllers"
-    pin "bootstrap", to: "https://ga.jspm.io/npm:bootstrap@5.1.3/dist/js/bootstrap.esm.js"
-    pin "@popperjs/core", to: "https://unpkg.com/@popperjs/core@2.11.2/dist/esm/index.js"
-  RUBY
+  run 'rails stimulus:install'
 
   # Pages Controller
   ########################################
