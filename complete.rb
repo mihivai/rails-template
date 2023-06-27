@@ -34,6 +34,18 @@ end
   RUBY
 end
 
+def install_active_admin
+  run "bundle add activeadmin"
+  run "bin/rails generate active_admin:install"
+  run "bin/rails db:migrate"
+
+  append_file "db/seeds.rb", <<~RUBY
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
+  RUBY
+
+  run "bin/rails db:seed"
+end
+
 def add_pages_home
   <<-HTML
 <%= content_for :meta_title, "Yourdomain - Your Meta" %>
@@ -247,17 +259,7 @@ end
   run "bin/rails generate draper:install"
 
   # active admin
-  if ACTIVEADMIN
-    run "bundle add activeadmin"
-    run "bin/rails generate active_admin:install"
-    run "bin/rails db:migrate"
-
-    append_file "db/seeds.rb", <<~RUBY
-AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
-  RUBY
-
-  run "bin/rails db:seed"
-  end
+  install_active_admin if ACTIVEADMIN
 
   # Install Stimulus
   # generate('stimulus:install')
