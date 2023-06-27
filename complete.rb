@@ -196,6 +196,10 @@ after_bundle do
     import 'bootstrap'
   JS
 
+  # Install Simple Form
+  # generate('simple_form:install', '--bootstrap')
+  run "bin/rails generate simple_form:install --bootstrap"
+
 
   # ImportMap
   run "bundle add importmap-rails"
@@ -229,10 +233,6 @@ after_bundle do
   # Install Draper
   # generate('draper:install')
   run "bin/rails generate draper:install"
-
-  # Install Simple Form
-  # generate('simple_form:install', '--bootstrap')
-  run "bin/rails generate simple_form:install --bootstrap"
 
   # Install Stimulus
   # generate('stimulus:install')
