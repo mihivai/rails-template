@@ -207,6 +207,9 @@ def update_error_page(var)
         text-align: center;
         font-family: arial, sans-serif;
         margin: 20px;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
       }
 
       .banner-logo img {
