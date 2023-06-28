@@ -153,7 +153,9 @@ def add_layout
   <body>
     <%= render 'shared/navbar' %>
     <%= render 'shared/flashes' %>
-    <%= yield %>
+    <div class="container">
+      <%= yield %>
+    </div>
     <%= render 'shared/footer' %>
   </body>
 </html>
@@ -207,9 +209,6 @@ def update_error_page(var)
         text-align: center;
         font-family: arial, sans-serif;
         margin: 20px;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
       }
 
       .banner-logo img {
@@ -451,8 +450,13 @@ run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/sta
 
 
 # SCSS
-file 'app/assets/stylesheets/components/_utilities.scss', <<-CSS
-CSS
+file 'app/assets/stylesheets/components/_utilities.scss', <<-SCSS
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+SCSS
 
 run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/navbar.scss > app/assets/stylesheets/components/_navbar.scss'
 run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/footer.scss > app/assets/stylesheets/components/_footer.scss'
