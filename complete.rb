@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
   end
 
   def skip_pundit?
-    devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)|(^errors$)/ || active_admin_controller?
+    devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)/ || active_admin_controller?
   end
 end
   RUBY
@@ -385,7 +385,7 @@ RUBY
 file 'app/controllers/errors_controller.rb', <<-RUBY
 class ErrorsController < ApplicationController
   skip_before_action :authenticate_user!
-  # skip_after_action :verify_authorized
+  skip_after_action :verify_authorized
   def show
     @exception = request.env["action_dispatch.exception"]
     @status_code = @exception.try(:status_code) ||
