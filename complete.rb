@@ -34,11 +34,46 @@ end
   RUBY
 end
 
+def generate_application_controller_with_admin
+  run "rm app/controllers/application_controller.rb"
+  file "app/controllers/application_controller.rb", <<~RUBY
+class ApplicationController < ActionController::Base
+  before_action :authenticate_user!
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  after_action :verify_authorized, unless: :skip_pundit?
+
+  def active_admin_controller?
+    is_a?(ActiveAdmin::BaseController)
+  end
+
+  def skip_pundit?
+    devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)|(^errors$)/ || active_admin_controller?
+  end
+end
+  RUBY
+end
+
+def generate_application_controller_without_admin
+  run "rm app/controllers/application_controller.rb"
+  file "app/controllers/application_controller.rb", <<~RUBY
+class ApplicationController < ActionController::Base
+  before_action :authenticate_user!
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  after_action :verify_authorized, unless: :skip_pundit?
+
+  def skip_pundit?
+    devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)|(^errors$)/
+  end
+end
+  RUBY
+end
+
 def install_active_admin
   run "bundle add activeadmin"
   run "bin/rails generate active_admin:install"
   run "bin/rails db:migrate"
   run "bin/rails db:seed"
+  generate_application_controller_with_admin
 end
 
 def install_postmark
@@ -340,7 +375,67 @@ generators = <<~RUBY
     generate.helper false
     generate.test_framework :test_unit, fixture: false
   end
+  config.exceptions_app = ->(env) {
+    ErrorsController.action(:show).call(env)
+  }
 RUBY
+
+
+# ERRORS
+file 'app/controllers/errors_controller.rb', <<-RUBY
+class ErrorsController < ApplicationController
+  skip_before_action :authenticate_user!
+  # skip_after_action :verify_authorized
+  def show
+    @exception = request.env["action_dispatch.exception"]
+    @status_code = @exception.try(:status_code) ||
+                  ActionDispatch::ExceptionWrapper.new(
+                    request.env, @exception
+                  ).status_code
+
+    render view_for_code(@status_code), status: @status_code
+  end
+
+  private
+
+  def view_for_code(code)
+    supported_error_codes.fetch(code, "404")
+  end
+
+  def supported_error_codes
+    {
+      403 => "403",
+      404 => "404",
+      500 => "500"
+    }
+  end
+end
+RUBY
+
+run 'mkdir -p app/views/errors && touch app/views/errors/_template.html.erb'
+
+file 'app/views/errors/404.html.erb', <<-HTML
+<%= render 'errors/template' %>
+HTML
+
+file 'app/views/errors/500.html.erb', <<-HTML
+<div class="page-min-height py-50px">
+  <div class="navbar-height"></div>
+  <div class="container">
+    <div class="mw-58">
+      <h1 class="mb-2pc styleH1">Désolé, cette page n’est plus disponible.</h1>
+      <h4 class="mb-2pc styleH4">Jongler avec les livres, les vinyles ou les partitions d'occasion n'est pas si facile...</h4>
+      <%= link_to "Aller à l'accueil du site", root_path, class: "btn one-button btn-primary" %>
+    </div>
+  </div>
+</div>
+HTML
+
+file 'app/views/errors/_template.html.erb', <<-HTML
+<%= render 'errors/template' %>
+HTML
+
+
 
 environment generators
 
@@ -514,19 +609,16 @@ pin "@popperjs/core", to: "https://unpkg.com/@popperjs/core@2.11.2/dist/esm/inde
 
   run "bin/rails db:migrate"
 
-  run "rm app/controllers/application_controller.rb"
-  file "app/controllers/application_controller.rb", <<~RUBY
-class ApplicationController < ActionController::Base
-  before_action :authenticate_user!
-end
-  RUBY
-
   run "bin/rails generate pundit:install"
 
   run "bin/rails generate draper:install"
 
   # active admin
-  install_active_admin if yes?("Would you like to install ActiveAdmin ?")
+  if yes?("Would you like to install ActiveAdmin ?")
+    install_active_admin
+  else
+    generate_application_controller_without_admin
+  end
 
   # postmark
   install_postmark if yes?("Would you like to install Postmark ?")
