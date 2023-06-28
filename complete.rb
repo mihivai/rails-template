@@ -412,27 +412,26 @@ class ErrorsController < ApplicationController
 end
 RUBY
 
-run 'mkdir -p app/views/errors && touch app/views/errors/_template.html.erb'
+run 'mkdir -p app/views/errors'
 
 file 'app/views/errors/404.html.erb', <<-HTML
 <%= render 'errors/template' %>
 HTML
 
 file 'app/views/errors/500.html.erb', <<-HTML
+<%= render 'errors/template' %>
+HTML
+
+file 'app/views/errors/_template.html.erb', <<-HTML
 <div class="page-min-height py-50px">
   <div class="navbar-height"></div>
   <div class="container">
     <div class="mw-58">
-      <h1 class="mb-2pc styleH1">Désolé, cette page n’est plus disponible.</h1>
-      <h4 class="mb-2pc styleH4">Jongler avec les livres, les vinyles ou les partitions d'occasion n'est pas si facile...</h4>
-      <%= link_to "Aller à l'accueil du site", root_path, class: "btn one-button btn-primary" %>
+      <h1 class="mb-2pc">Désolé, cette page n’est plus disponible.</h1>
+      <%= link_to "Aller à l'accueil du site", root_path, class: "btn btn-primary" %>
     </div>
   </div>
 </div>
-HTML
-
-file 'app/views/errors/_template.html.erb', <<-HTML
-<%= render 'errors/template' %>
 HTML
 
 
@@ -491,8 +490,19 @@ $sizes: 16px 20px 24px;
 }
 
 .page-min-height {
-  min-height: calc(100vh - 70px)
+  min-height: calc(100vh - 70px);
 }
+.mw-58 {
+  max-width: 58%;
+}
+.py-50px {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.mb-2pc {
+  margin-bottom: 2pc!important;
+}
+
 SCSS
 
 file 'app/assets/stylesheets/config/_fonts.scss', <<-SCSS
