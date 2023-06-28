@@ -62,7 +62,7 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized, unless: :skip_pundit?
 
   def skip_pundit?
-    devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)|(^errors$)/
+    devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)/
   end
 end
   RUBY
