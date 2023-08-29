@@ -39,6 +39,7 @@ def generate_application_controller_with_admin
   file "app/controllers/application_controller.rb", <<~RUBY
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
+  include Pundit::Authorization
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   after_action :verify_authorized, unless: :skip_pundit?
 
@@ -48,6 +49,11 @@ class ApplicationController < ActionController::Base
 
   def skip_pundit?
     devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)/ || active_admin_controller?
+  end
+
+  def user_not_authorized
+    flash[:alert] = "Vous n'êtes pas autorisé à réaliser cette action."
+    redirect_to(root_path)
   end
 end
   RUBY
@@ -349,7 +355,7 @@ HTML
 end
 
 # Custom Seed
-file 'lib/tasks/custom_seed.rb', <<-RUBY
+file 'lib/tasks/custom_seed.rake', <<-RUBY
 namespace :db do
   namespace :seed do
     Dir[Rails.root.join('db', 'seeds', '*.rb')].each do |filename|
@@ -619,6 +625,10 @@ after_bundle do
 pin "bootstrap", to: "https://ga.jspm.io/npm:bootstrap@5.1.3/dist/js/bootstrap.esm.js"
 pin "@popperjs/core", to: "https://unpkg.com/@popperjs/core@2.11.2/dist/esm/index.js"
   RUBY
+
+append_file "app/javascript/application.js", <<~JS
+import "bootstrap"
+JS
 
   run "bin/rails generate devise:install"
   run "bin/rails generate devise User"
