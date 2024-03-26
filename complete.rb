@@ -15,6 +15,8 @@ gem "importmap-rails"
 gem 'turbo-rails'
 gem "jbuilder"
 gem "sassc-rails"
+gem 'rack-attack'
+gem "recaptcha"
 gem "bootsnap", require: false
 
 group :development, :test do
@@ -78,7 +80,17 @@ def install_active_admin
   run "bundle add activeadmin"
   run "bin/rails generate active_admin:install"
   run "bin/rails db:migrate"
+
+  run 'rm config/initializers/active_admin.rb'
+  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/active_admin.rb > config/initializers/active_admin.rb'
+  run "bin/rails generate migration AddAdminToUsers admin:boolean"
+  run "bin/rails db:migrate"
+
+  run 'rm db/seeds.rb'
+  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/seeds.rb > db/seeds.rb'
   run "bin/rails db:seed"
+
+
   generate_application_controller_with_admin
 end
 
@@ -639,6 +651,20 @@ JS
   run "bin/rails generate pundit:install"
 
   run "bin/rails generate draper:install"
+
+
+  # devise
+  run 'rm config/initializers/devise.rb'
+  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/devise.rb > config/initializers/devise.rb'
+
+
+  # rack attack
+  run "rm config/initializers/rack_attack.rb"
+  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/rack_attack.rb > config/initializers/rack_attack.rb'
+
+  # recaptcha
+  run 'mkdir -p app/controllers/users'
+  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/sessions_controller.rb > app/controllers/users/sessions_controller.rb'
 
   # active admin
   if yes?("Would you like to install ActiveAdmin ?")
