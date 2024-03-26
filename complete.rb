@@ -659,7 +659,9 @@ JS
 
 
   # rack attack
-  run "rm config/initializers/rack_attack.rb"
+  if File.exist?('config/initializers/rack_attack.rb')
+    run "rm config/initializers/rack_attack.rb"
+  end
   run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/rack_attack.rb > config/initializers/rack_attack.rb'
 
   # recaptcha
