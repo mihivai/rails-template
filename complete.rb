@@ -294,7 +294,7 @@ end
 
 def add_navbar
 <<-HTML
-<div class="navbar-mihivai">
+<div class="navbar-mihivai <%= yield(:navbar_classes)%>">
   <!-- Logo -->
   <a href="/" class="navbar-mihivai-brand">
     <%= image_tag "logo.png" %>
@@ -347,7 +347,7 @@ end
 
 def add_footer
 <<-HTML
-<div class="footer d-flex justify-content-between align-items-center">
+<div class="<%= yield(:footer_classes)%> footer d-flex justify-content-between align-items-center">
   <div class="footer-links">
   </div>
   <div class="footer-copyright d-flex flex-column">
