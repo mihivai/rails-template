@@ -586,6 +586,9 @@ JS
   run 'rm app/views/devise/registrations/edit.html.erb'
   run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/views/devise/registrations/edit.html.erb > app/views/devise/registrations/edit.html.erb'
 
+  run 'rm app/views/devise/passwords/new.html.erb'
+  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/views/devise/passwords/new.html.erb > app/views/devise/passwords/new.html.erb'
+
 
   run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/config/locales/devise.fr.yml > config/locales/devise.fr.yml'
 
