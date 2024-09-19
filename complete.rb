@@ -74,6 +74,11 @@ class ApplicationController < ActionController::Base
   def skip_pundit?
     devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)/
   end
+
+  def user_not_authorized
+    flash[:alert] = "Vous n'êtes pas autorisé à réaliser cette action."
+    redirect_to(root_path)
+  end
 end
   RUBY
 end
