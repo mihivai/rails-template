@@ -1,7 +1,11 @@
 <%= content_for :meta_title, "Mihivai - Créer un compte" %>
 
-<div class="container d-flex flex-column align-items-center mt-8 font-size-16px">
-  <div class="mb-4"><%= image_tag "logo.png" %></div>
+<div class="container d-flex flex-column align-items-center my-8 font-size-16px">
+  <div class="mb-4">
+    <%= link_to root_path, class: 'text-decoration-none' do %>
+      <%= image_tag "logo.png" %>
+    <% end %>
+  </div>
   <h2 class="font-size-32px text-grey-dark mb-4">Modifier mon compte Mihivai</h2>
   <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
     <%= f.error_notification %>

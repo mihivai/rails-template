@@ -1,7 +1,13 @@
 <%= content_for :meta_title, "Mihivai - Créer un compte" %>
+<%= content_for :navbar_classes, "d-none" %>
+<%= content_for :footer_classes, "d-none" %>
 
-<div class="container d-flex flex-column align-items-center mt-8 font-size-16px">
-  <div class="mb-4"><%= image_tag "logo.png" %></div>
+<div class="container d-flex flex-column align-items-center my-8 font-size-16px">
+  <div class="mb-4">
+    <%= link_to root_path, class: 'text-decoration-none' do %>
+      <%= image_tag "logo.png" %>
+    <% end %>
+  </div>
   <h2 class="font-size-32px text-grey-dark mb-4">Créer votre compte Mihivai</h2>
   <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
     <div class="form-inputs d-flex flex-column gap-2">
