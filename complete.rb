@@ -66,8 +66,10 @@ def generate_application_controller_without_admin
   file "app/controllers/application_controller.rb", <<~RUBY
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
+
+  include Pundit::Authorization
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  after_action :verify_authorized, unless: :skip_pundit?
+  after_action :verify_authorized, except: %i[index], unless: :skip_pundit?
 
   def skip_pundit?
     devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)/
@@ -82,7 +84,7 @@ def install_active_admin
   run "bin/rails db:migrate"
 
   run 'rm config/initializers/active_admin.rb'
-  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/active_admin.rb > config/initializers/active_admin.rb'
+  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/config/active_admin.rb > config/initializers/active_admin.rb'
   run "bin/rails generate migration AddAdminToUsers admin:boolean"
   run "bin/rails db:migrate"
 
@@ -170,8 +172,10 @@ def add_layout
   </head>
   <body>
     <%= render 'shared/navbar' %>
-    <%= render 'shared/flashes' %>
-    <div class="container">
+    <div id='flash'>
+      <%= render 'shared/flashes' %>
+    </div>
+    <div class='container'>
       <%= yield %>
     </div>
     <%= render 'shared/footer' %>
@@ -181,20 +185,7 @@ HTML
 end
 
 def add_flash
-<<-HTML
-<% if notice %>
-  <div class="alert alert-info alert-dismissible" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <%= notice %>
-  </div>
-<% end %>
-<% if alert %>
-  <div class="alert alert-warning alert-dismissible" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <%= alert %>
-  </div>
-<% end %>
-HTML
+  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/views/shared/flashes.html.erb > app/views/shared/_flashes.html.erb'
 end
 
 def add_google_analytics
@@ -464,108 +455,26 @@ environment "config.action_mailer.delivery_method = :letter_opener", env: 'devel
 environment "config.action_mailer.default_url_options = { host: 'your-production-url.com' }", env: 'production'
 
 # Staging
-run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/staging.rb > config/environments/staging.rb'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/config/staging.rb > config/environments/staging.rb'
 
 
 # SCSS
-file 'app/assets/stylesheets/components/_utilities.scss', <<-SCSS
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-SCSS
 
-run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/navbar.scss > app/assets/stylesheets/components/_navbar.scss'
-run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/footer.scss > app/assets/stylesheets/components/_footer.scss'
+#components
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/components/utilities.scss > app/assets/stylesheets/components/_utilities.scss'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/components/navbar.scss > app/assets/stylesheets/components/_navbar.scss'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/components/footer.scss > app/assets/stylesheets/components/_footer.scss'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/components/flashes.scss > app/assets/stylesheets/components/_flashes.scss'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/components/index.scss > app/assets/stylesheets/components/_index.scss'
 
 
+# config
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/config/sizing.scss > app/assets/stylesheets/config/_sizing.scss'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/config/fonts.scss > app/assets/stylesheets/config/_fonts.scss'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/config/bootstrap_variables.scss > app/assets/stylesheets/config/_bootstrap_variables.scss'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/config/colors.scss > app/assets/stylesheets/config/_colors.scss'
 
 
-file 'app/assets/stylesheets/components/_index.scss', <<-CSS
-  // Import your layouts CSS files here.
-@import "footer";
-@import "navbar";
-@import "utilities";
-CSS
-
-
-file 'app/assets/stylesheets/config/_sizing.scss', <<-SCSS
-$sizes: 16px 20px 24px;
-
-@each $size in $sizes {
-  .height-#{$size} {
-    height: $size;
-  }
-  .width-#{$size} {
-    width: $size;
-  }
-  .max-height-#{$size} {
-    max-height: $size;
-  }
-  .max-width-#{$size} {
-    max-width: $size;
-  }
-  .min-height-#{$size} {
-    min-height: $size;
-  }
-  .min-width-#{$size} {
-    min-width: $size;
-  }
-}
-
-.page-min-height {
-  min-height: calc(100vh - 70px);
-}
-.mw-58 {
-  max-width: 58%;
-}
-.py-50px {
-  padding-top: 50px;
-  padding-bottom: 50px;
-}
-.mb-2pc {
-  margin-bottom: 2pc!important;
-}
-
-SCSS
-
-file 'app/assets/stylesheets/config/_fonts.scss', <<-SCSS
-$fonts: 16px 20px 24px;
-
-@each $font in $fonts {
-  .font-size-#{$font} {
-    font-size: $font !important;
-  }
-  @media(min-width:768px) {
-    .font-size-md-#{$font} {
-    font-size: $font !important;
-    }
-  }
-  @media(min-width:992px) {
-    .font-size-lg-#{$font} {
-    font-size: $font !important;
-    }
-  }
-  @media(min-width:1200px) {
-    .font-size-xl-#{$font} {
-    font-size: $font !important;
-    }
-  }
-  @media(min-width:1400px) {
-    .font-size-xxl-#{$font} {
-    font-size: $font !important;
-    }
-  }
-
-}
-SCSS
-
-file 'app/assets/stylesheets/config/_colors.scss', <<-CSS
-CSS
-
-file 'app/assets/stylesheets/config/_bootstrap_variables.scss', <<-CSS
-CSS
 
 run 'rm app/assets/stylesheets/application.css'
 file 'app/assets/stylesheets/application.scss', <<-CSS
@@ -590,8 +499,7 @@ run 'rm app/views/layouts/application.html.erb'
 file 'app/views/layouts/application.html.erb',
   add_layout
 
-file 'app/views/shared/_flashes.html.erb',
-  add_flash
+add_flash
 
 file 'app/views/shared/_footer.html.erb',
   add_footer
@@ -612,8 +520,11 @@ file 'public/422.html',
 file 'app/views/shared/_navbar.html.erb',
   add_navbar
 
-run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/logo.png > app/assets/images/logo.png'
-run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/logo.png > public/logo.png'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/images/logo.png > app/assets/images/logo.png'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/images/logo.png > public/logo.png'
+
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/images/banner.png > app/assets/images/banner.png'
+
 
 # README
 ########################################
@@ -655,14 +566,26 @@ JS
 
   # devise
   run 'rm config/initializers/devise.rb'
-  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/devise.rb > config/initializers/devise.rb'
+  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/config/devise.rb > config/initializers/devise.rb'
+
+  run 'rm app/views/devise/sessions/new.html.erb'
+  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/views/devise/sessions/new.html.erb > app/views/devise/sessions/new.html.erb'
+
+  run 'rm app/views/devise/registrations/new.html.erb'
+  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/views/devise/registrations/new.html.erb > app/views/devise/registrations/new.html.erb'
+
+  run 'rm app/views/devise/registrations/edit.html.erb'
+  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/views/devise/registrations/edit.html.erb > app/views/devise/registrations/edit.html.erb'
+
+
+  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/config/locales/devise.fr.yml > config/locales/devise.fr.yml'
 
 
   # rack attack
   if File.exist?('config/initializers/rack_attack.rb')
     run "rm config/initializers/rack_attack.rb"
   end
-  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/rack_attack.rb > config/initializers/rack_attack.rb'
+  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/config/rack_attack.rb > config/initializers/rack_attack.rb'
 
   # recaptcha
   run 'mkdir -p app/controllers/users'
