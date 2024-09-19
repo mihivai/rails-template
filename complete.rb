@@ -293,57 +293,7 @@ HTML
 end
 
 def add_navbar
-<<-HTML
-<div class="<%= yield(:navbar_classes)%>"
-  <div class="navbar-mihivai">
-    <!-- Logo -->
-    <a href="/" class="navbar-mihivai-brand">
-      <%= image_tag "logo.png" %>
-    </a>
-
-    <div class="d-none d-md-block">
-      <div class="d-flex align-items-center justify-content-between">
-        <%= link_to "Notre Activité", "#", class: "navbar-mihivai-item navbar-mihivai-link" %>
-        <%= link_to "Nos Services", "/", class: "navbar-mihivai-item navbar-mihivai-link" %>
-        <%= link_to "Contact", "/", class: "navbar-mihivai-item navbar-mihivai-link" %>
-        <% if user_signed_in? %>
-          <%= link_to t(".sign_out", default: "Log out"), destroy_user_session_path, method: :delete , class: "navbar-mihivai-item navbar-mihivai-link"%>
-        <% else %>
-          <%= link_to t(".sign_in", default: "Login"), new_user_session_path , class: "navbar-mihivai-item navbar-mihivai-link"%>
-        <% end %>
-      </div>
-    </div>
-
-    <div class="d-block d-md-none">
-      <div class="navbar-dropdown">
-        <input id="toggle" type="checkbox"/>
-        <label class="hamburger" for="toggle">
-          <div class="top"></div>
-          <div class="meat"></div>
-          <div class="bottom"></div>
-        </label>
-
-        <div class="nav">
-          <div class="nav-wrapper">
-            <nav class= "d-flex flex-column">
-              <%= link_to "Accueil", root_path, class: "navbar-link" %>
-              <% if user_signed_in? %>
-                <%= link_to "Se Déconnecter", destroy_user_session_path, class: "navbar-link", method: :delete %>
-              <% else %>
-                <%= link_to "Créer un Compte", new_user_registration_path, class: "navbar-link" %>
-                <%= link_to "Se Connecter", new_user_session_path,  class: "navbar-link" %>
-              <% end %>
-            </nav>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div style="height: 70px;"></div>
-</div>
-HTML
+  run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/views/shared/navbar.html.erb > app/views/shared/_navbar.html.erb'
 end
 
 def add_footer
@@ -527,8 +477,7 @@ file 'public/422.html',
   update_error_page(422)
 
 
-file 'app/views/shared/_navbar.html.erb',
-  add_navbar
+add_navbar
 
 run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/images/logo.png > app/assets/images/logo.png'
 run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/images/logo.png > public/logo.png'
