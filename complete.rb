@@ -190,6 +190,7 @@ HTML
 end
 
 def add_flash
+  run 'mkdir -p app/views/shared'
   run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/views/shared/flashes.html.erb > app/views/shared/_flashes.html.erb'
 end
 
@@ -466,6 +467,7 @@ run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/con
 # SCSS
 
 #components
+run 'mkdir -p app/assets/stylesheets/components'
 run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/components/utilities.scss > app/assets/stylesheets/components/_utilities.scss'
 run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/components/navbar.scss > app/assets/stylesheets/components/_navbar.scss'
 run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/components/footer.scss > app/assets/stylesheets/components/_footer.scss'
@@ -474,6 +476,7 @@ run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scs
 
 
 # config
+run 'mkdir -p app/assets/stylesheets/config'
 run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/config/sizing.scss > app/assets/stylesheets/config/_sizing.scss'
 run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/config/fonts.scss > app/assets/stylesheets/config/_fonts.scss'
 run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/config/bootstrap_variables.scss > app/assets/stylesheets/config/_bootstrap_variables.scss'
