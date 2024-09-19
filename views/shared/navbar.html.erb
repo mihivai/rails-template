@@ -14,7 +14,7 @@
           <% if user_signed_in? %>
             <%= link_to 'Se déconnecter', destroy_user_session_path, class: 'dropdown-item', data: { turbo_method: :delete } %>
           <% else %>
-            <%= link_to 'Se connecter', new_session_path(resource_name), class: 'dropdown-item'  %>
+            <%= link_to 'Se connecter', new_user_session_path, class: 'dropdown-item'  %>
           <% end %>
         </div>
       </div>

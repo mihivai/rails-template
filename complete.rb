@@ -180,9 +180,7 @@ def add_layout
     <div id='flash'>
       <%= render 'shared/flashes' %>
     </div>
-    <div class='container'>
-      <%= yield %>
-    </div>
+    <%= yield %>
     <%= render 'shared/footer' %>
   </body>
 </html>
