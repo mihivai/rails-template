@@ -535,6 +535,11 @@ run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/ima
 
 run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/images/banner.png > app/assets/images/banner.png'
 
+run 'mkdir -p app/assets/images/pictos'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/images/pictos/avatar.svg > app/assets/images/pictos/avatar.svg'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/images/pictos/close.svg > app/assets/images/pictos/close.svg'
+
+
 
 # README
 ########################################
@@ -694,6 +699,26 @@ YAML
 
 file 'config/initializers/default_meta.rb', <<-RUBY
 DEFAULT_META = YAML.load_file(Rails.root.join("config/meta.yml"))
+RUBY
+
+
+file 'app/helpers/application_helper.rb', <<-RUBY
+module ApplicationHelper
+
+  def svg_tag(name)
+    file_path = "#{Rails.root}/app/assets/images/#{name}.svg"
+    if File.exists?(file_path)
+       File.read(file_path).html_safe
+    else
+      '(not found)'
+    end
+  end
+
+  def render_turbo_stream_flash_messages
+    turbo_stream.prepend "flash", partial: "shared/flashes"
+  end
+end
+
 RUBY
 
 
