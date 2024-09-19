@@ -469,6 +469,7 @@ run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/con
 #components
 run 'mkdir -p app/assets/stylesheets/components'
 run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/components/utilities.scss > app/assets/stylesheets/components/_utilities.scss'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/components/banner.scss > app/assets/stylesheets/components/_banner.scss'
 run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/components/navbar.scss > app/assets/stylesheets/components/_navbar.scss'
 run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/components/footer.scss > app/assets/stylesheets/components/_footer.scss'
 run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/scss/components/flashes.scss > app/assets/stylesheets/components/_flashes.scss'
