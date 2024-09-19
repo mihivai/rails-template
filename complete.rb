@@ -702,24 +702,9 @@ DEFAULT_META = YAML.load_file(Rails.root.join("config/meta.yml"))
 RUBY
 
 
-file 'app/helpers/application_helper.rb', <<-RUBY
-module ApplicationHelper
+run 'rm -rf app/helpers/application_helper.rb'
+run 'curl -L https://raw.githubusercontent.com/Mihivai/rails-template/master/application_helper.rb > app/helpers/application_helper.rb'
 
-  def svg_tag(name)
-    file_path = "#{Rails.root}/app/assets/images/#{name}.svg"
-    if File.exists?(file_path)
-       File.read(file_path).html_safe
-    else
-      '(not found)'
-    end
-  end
-
-  def render_turbo_stream_flash_messages
-    turbo_stream.prepend "flash", partial: "shared/flashes"
-  end
-end
-
-RUBY
 
 
 file 'app/helpers/meta_tags_helper.rb', <<-RUBY
