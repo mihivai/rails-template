@@ -344,6 +344,8 @@ generators = <<~RUBY
   config.exceptions_app = ->(env) {
     ErrorsController.action(:show).call(env)
   }
+  config.i18n.default_locale = :fr
+  config.i18n.available_locales = ["fr"]
 RUBY
 
 
