@@ -2,7 +2,7 @@
 <%= content_for :navbar_classes, "d-none" %>
 <%= content_for :footer_classes, "d-none" %>
 
-<div class="container d-flex flex-column align-items-center mt-10 font-size-16px">
+<div class="container d-flex flex-column align-items-center mt-8 font-size-16px">
   <div class="mb-4"><%= image_tag "logo.png" %></div>
   <h2 class="font-size-32px text-grey-dark mb-5">Mot de passe oublié</h2>
   <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'col-8 col-md-6' }) do |f| %>
@@ -21,7 +21,7 @@
     </div>
 
     <div class="text-grey mt-5 text-center">
-      Vous avez déjà un compte ? <span class="text-green fw-bolder"><%= link_to 'Se connecter', new_session_path(resource_name), class: "text-decoration-none" %> </span>
+      Vous avez déjà un compte ? <span class="text-green fw-bolder"><%= link_to 'Se connecter', new_session_path(resource_name), class: "text-decoration-none text-green" %> </span>
     </div>
   <% end %>
 
