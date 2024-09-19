@@ -1,7 +1,7 @@
 <div class="<%= yield(:navbar_classes)%>">
   <div class="navbar">
     <%= link_to root_path, class: 'navbar-brand' do %>
-      <%= svg_tag('pictos/logo') %> <span class="title d-none d-md-block">Persephone</span>
+      <%= image_tag "logo.png" %><span class="title d-none d-md-block">Mihivai</span>
     <% end %>
 
     <div class='d-flex align-items-center gap-3'>
@@ -11,7 +11,11 @@
         </div>
 
         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-          <%= link_to 'Se déconnecter', destroy_user_session_path, class: 'dropdown-item', data: { turbo_method: :delete } %>
+          <% if user_signed_in? %>
+            <%= link_to 'Se déconnecter', destroy_user_session_path, class: 'dropdown-item', data: { turbo_method: :delete } %>
+          <% else %>
+            <%= link_to 'Se connecter', new_session_path(resource_name), class: 'dropdown-item'  %>
+          <% end %>
         </div>
       </div>
 
